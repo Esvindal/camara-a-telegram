@@ -1,0 +1,9 @@
+services:
+  camara-a-telegram:
+    build: .
+    env_file: .env
+    volumes:
+      - ./datos:/app/datos
+    restart: unless-stopped
+    # Red solo saliente: el contenedor llama a la camara y a Telegram,
+    # nunca expone puertos. La camara se alcanza por la red local o VPN.
