@@ -22,7 +22,7 @@
       <a href="#camara-real">Cámara real</a>
       <a href="#registro">Registro</a>
     </nav>
-    <a class="boton boton-fantasma" href="https://github.com/USUARIO/camara-a-telegram">Ver el código</a>
+    <a class="boton boton-fantasma" href="https://github.com/Esvindal/camara-a-telegram">Ver el código</a>
   </div>
 </header>
 
@@ -36,9 +36,16 @@
       <a class="boton" href="#camara-real">Conectar una cámara real</a>
       <a class="boton boton-fantasma" href="#registro">Ver registro de ejemplo</a>
     </div>
-    <div class="video-hueco" role="note">
-      <span class="video-hueco-titulo">Video de la prueba real</span>
-      <span class="video-hueco-texto">Cámara → celular, 30–45 s. Pendiente de grabación.</span>
+    <div class="replay" role="note" aria-label="Corrida simulada del pipeline">
+      <div class="replay-cab">
+        <span class="replay-titulo">corrida simulada — el pipeline real, eventos del simulador</span>
+        <span class="tag tag-sim">Simulado</span>
+      </div>
+      <pre class="replay-pantalla" id="replay-pantalla" aria-hidden="true">$ camara-a-telegram run --fuente simulator
+</pre>
+      <p class="replay-pie">El video de la prueba con cámara física
+      (cámara → celular, 30–45 s) está <strong>pendiente de grabación</strong>;
+      esto es una reproducción honesta de la corrida con el simulador.</p>
     </div>
   </section>
 
@@ -160,9 +167,13 @@ camara-a-telegram run --fuente simulator --dry-run</code></pre></div>
   <div class="contenedor">
     <p>Demo funcional de integración de cámaras IP. Sin SDK propietarios: solo
     protocolos HTTP públicos. Licencia MIT.</p>
+    <p lang="en"><strong>EN:</strong> Working demo — an IP camera event triggers
+    a snapshot sent to Telegram and logged to SQLite. Open source (MIT), tested
+    offline; real-camera verification pending.</p>
   </div>
 </footer>
 
 <script src="app.js"></script>
+<script src="replay.js"></script>
 </body>
 </html>

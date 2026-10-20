@@ -12,6 +12,13 @@ todo sin cámara. Sin SDK propietarios: solo protocolos públicos.
 > SQLite/CSV. Ships with a simulator so the whole pipeline can be tested and
 > demoed without a camera. MIT licensed.
 
+## Capturas del sitio (reales)
+
+Sitio publicado en GitHub Pages: https://esvindal.github.io/camara-a-telegram/
+
+![Sitio en escritorio](docs/capturas/docs-1440.png)
+<img src="docs/capturas/docs-390.png" width="320" alt="Sitio en móvil">
+
 ## Arranque en 5 minutos (simulador, sin Telegram)
 
 ```bash
