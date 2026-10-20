@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "camara-a-telegram"
+version = "0.1.0"
+description = "Demo funcional: evento de camara IP -> foto en Telegram -> registro en SQLite/CSV"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "Pablo Cariaga" }]
+dependencies = [
+    "httpx>=0.27,<1.0",
+    "Pillow>=10.0",
+    "python-dotenv>=1.0",
+]
+
+[project.optional-dependencies]
+webcam = ["opencv-python>=4.10"]
+sheets = ["gspread>=6.0"]
+dev = [
+    "pytest>=8.0",
+    "respx>=0.21",
+    "ruff>=0.6",
+    "mypy>=1.10",
+]
+
+[project.scripts]
+camara-a-telegram = "camara_telegram.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.mypy]
+python_version = "3.12"
+mypy_path = "src"
+packages = ["camara_telegram"]
+disallow_untyped_defs = true
+warn_return_any = true
+warn_unused_ignores = true
+ignore_missing_imports = true
