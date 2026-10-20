@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>camara-a-telegram — evento de cámara → foto en Telegram → registro</title>
+<meta name="description" content="Demo funcional: una cámara IP Dahua o Hikvision detecta un evento, el sistema toma la foto, la manda a Telegram y la registra en SQLite/CSV.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<header class="top">
+  <div class="contenedor top-fila">
+    <span class="marca"><span class="marca-punto" aria-hidden="true"></span>camara-a-telegram</span>
+    <nav aria-label="Secciones">
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#arquitectura">Arquitectura</a>
+      <a href="#camara-real">Cámara real</a>
+      <a href="#registro">Registro</a>
+    </nav>
+    <a class="boton boton-fantasma" href="https://github.com/USUARIO/camara-a-telegram">Ver el código</a>
+  </div>
+</header>
+
+<main id="contenido">
+  <section class="hero contenedor">
+    <h1>Un evento en la cámara.<br>Una foto en tu Telegram.</h1>
+    <p class="bajada">Servicio en Python que escucha los eventos de una cámara IP
+    Dahua o Hikvision, toma la foto del momento, la envía por Telegram y la
+    registra en SQLite y CSV. Incluye un simulador para probarlo sin cámara.</p>
+    <div class="hero-acciones">
+      <a class="boton" href="#camara-real">Conectar una cámara real</a>
+      <a class="boton boton-fantasma" href="#registro">Ver registro de ejemplo</a>
+    </div>
+    <div class="video-hueco" role="note">
+      <span class="video-hueco-titulo">Video de la prueba real</span>
+      <span class="video-hueco-texto">Cámara → celular, 30–45 s. Pendiente de grabación.</span>
+    </div>
+  </section>
+
+  <section id="como-funciona" class="contenedor seccion">
+    <h2>Cómo funciona</h2>
+    <ol class="pasos">
+      <li><strong>Escucha.</strong> Se suscribe al flujo de eventos de la cámara
+      por HTTP: <code>eventManager.cgi</code> en Dahua o
+      <code>alertStream</code> (ISAPI) en Hikvision, con autenticación Digest.</li>
+      <li><strong>Fotografía.</strong> Ante un evento activo, pide el snapshot
+      JPEG del canal a la misma cámara.</li>
+      <li><strong>Avisa.</strong> Envía la foto por <code>sendPhoto</code> de la
+      API de Telegram con tipo de evento, cámara y hora local (UTC-3).
+      Reintenta con espera creciente y aplica un enfriamiento por tipo para no
+      spamear.</li>
+      <li><strong>Registra.</strong> Guarda cada evento en SQLite y lo exporta
+      a CSV. Sin servidor web: corre como proceso o contenedor.</li>
+    </ol>
+    <div class="real-vs" role="region" aria-label="Qué es real y qué es simulado">
+      <h3>Qué es real y qué es simulado</h3>
+      <table>
+        <thead><tr><th>Componente</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr><td>Parser de eventos Dahua / Hikvision</td><td><span class="tag tag-real">Real</span> testeado contra el formato público de los streams</td></tr>
+          <tr><td>Envío a Telegram (sendPhoto)</td><td><span class="tag tag-real">Real</span> testeado con HTTP simulado</td></tr>
+          <tr><td>Registro SQLite + CSV</td><td><span class="tag tag-real">Real</span></td></tr>
+          <tr><td>Fuente <code>simulator</code></td><td><span class="tag tag-sim">Simulada</span> eventos e imágenes generadas</td></tr>
+          <tr><td>Conexión a cámara física</td><td><span class="tag tag-pend">A verificar</span> probada solo contra el formato, falta dispositivo</td></tr>
+          <tr><td>Exportación a Google Sheets</td><td><span class="tag tag-pend">A verificar</span> opcional, requiere cuenta de servicio</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="arquitectura" class="contenedor seccion">
+    <h2>Arquitectura</h2>
+    <figure class="diagrama" role="img" aria-label="Diagrama: la cámara emite un flujo de eventos al listener en Python, que pide el snapshot, lo manda a Telegram y lo guarda en SQLite">
+      <svg viewBox="0 0 920 260" xmlns="http://www.w3.org/2000/svg" font-family="inherit">
+        <defs>
+          <marker id="flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0L10 5L0 10z" fill="currentColor"/>
+          </marker>
+        </defs>
+        <g class="nodo">
+          <rect x="20" y="86" width="190" height="88" rx="14"/>
+          <text x="115" y="122" text-anchor="middle" class="nodo-titulo">Cámara IP</text>
+          <text x="115" y="146" text-anchor="middle" class="nodo-sub">Dahua / Hikvision</text>
+        </g>
+        <g class="nodo nodo-central">
+          <rect x="330" y="30" width="260" height="200" rx="14"/>
+          <text x="460" y="62" text-anchor="middle" class="nodo-titulo">camara-a-telegram</text>
+          <text x="460" y="96" text-anchor="middle" class="nodo-sub">listener multipart</text>
+          <text x="460" y="122" text-anchor="middle" class="nodo-sub">enfriamiento anti-spam</text>
+          <text x="460" y="148" text-anchor="middle" class="nodo-sub">reintentos crecientes</text>
+          <text x="460" y="174" text-anchor="middle" class="nodo-sub">caption UTC-3</text>
+          <text x="460" y="204" text-anchor="middle" class="nodo-sub">--dry-run · logs sin claves</text>
+        </g>
+        <g class="nodo">
+          <rect x="700" y="30" width="200" height="80" rx="14"/>
+          <text x="800" y="64" text-anchor="middle" class="nodo-titulo">Telegram</text>
+          <text x="800" y="88" text-anchor="middle" class="nodo-sub">sendPhoto → celular</text>
+        </g>
+        <g class="nodo">
+          <rect x="700" y="150" width="200" height="80" rx="14"/>
+          <text x="800" y="184" text-anchor="middle" class="nodo-titulo">Registro</text>
+          <text x="800" y="208" text-anchor="middle" class="nodo-sub">SQLite → CSV</text>
+        </g>
+        <g class="aristas">
+          <path d="M210 118 C 270 118 270 100 328 100" marker-end="url(#flecha)"/>
+          <path d="M328 160 C 270 160 270 142 210 142" marker-end="url(#flecha)" class="arista-vuelta"/>
+          <path d="M590 70 C 650 70 645 70 698 70" marker-end="url(#flecha)"/>
+          <path d="M590 190 C 650 190 645 190 698 190" marker-end="url(#flecha)"/>
+        </g>
+        <text x="268" y="92" text-anchor="middle" class="arista-label">eventos</text>
+        <text x="268" y="180" text-anchor="middle" class="arista-label">snapshot.jpg</text>
+      </svg>
+    </figure>
+    <p class="nota">Todo el tráfico es saliente: el servicio llama a la cámara y
+    a la API de Telegram; no abre ningún puerto. La cámara se alcanza por la
+    red local o una VPN/túnel, nunca expuesta a Internet.</p>
+  </section>
+
+  <section id="camara-real" class="contenedor seccion">
+    <h2>Conectar una cámara real</h2>
+    <ol class="pasos">
+      <li><strong>Usuario de solo lectura.</strong> Creá en la cámara un usuario
+      con permiso mínimo (ver eventos y snapshots). No uses <code>admin</code>.</li>
+      <li><strong>Bot y chat id.</strong> Creá el bot con
+      <a href="https://t.me/BotFather">@BotFather</a>, mandale
+      <code>/start</code> y obtené el chat id con
+      <code>python scripts/obtener_chat_id.py</code>.</li>
+      <li><strong>Configurar.</strong> Copiá <code>.env.example</code> a
+      <code>.env</code> y completá <code>CAMARA_FUENTE=dahua</code> (o
+      <code>hikvision</code>), <code>CAMARA_URL</code>, usuario, clave y los
+      valores de Telegram.</li>
+      <li><strong>Probar sin enviar.</strong>
+      <code>camara-a-telegram run --dry-run</code> muestra lo que enviaría sin
+      llamar a Telegram.</li>
+      <li><strong>En marcha.</strong> <code>camara-a-telegram run</code> o
+      <code>docker compose up -d</code>.</li>
+    </ol>
+    <div class="codigo-bloque"><pre><code># arranque en 5 minutos con el simulador
+python -m venv .venv && .venv\Scripts\activate   # o source .venv/bin/activate
+pip install -e .
+camara-a-telegram run --fuente simulator --dry-run</code></pre></div>
+  </section>
+
+  <section id="registro" class="contenedor seccion">
+    <h2>Registro de eventos</h2>
+    <p class="aviso-simulados">Eventos <strong>simulados</strong>: generados por la
+    fuente <code>simulator</code> del propio proyecto, no por una cámara real.</p>
+    <div id="visor" class="visor" aria-live="polite">
+      <p class="visor-estado">Cargando eventos de ejemplo…</p>
+    </div>
+  </section>
+</main>
+
+<footer class="pie">
+  <div class="contenedor">
+    <p>Demo funcional de integración de cámaras IP. Sin SDK propietarios: solo
+    protocolos HTTP públicos. Licencia MIT.</p>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

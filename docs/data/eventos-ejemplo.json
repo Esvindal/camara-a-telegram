@@ -1,0 +1,126 @@
+{
+  "generado_en": "2026-10-20T15:46:01.968371+00:00",
+  "simulados": true,
+  "eventos": [
+    {
+      "id": 1,
+      "ts_utc": "2026-10-20T15:46:01.277412+00:00",
+      "tipo": "VideoMotion",
+      "canal": "1",
+      "camara": "Camara simulada",
+      "origen": "simulador",
+      "foto_ok": true,
+      "telegram_ok": true
+    },
+    {
+      "id": 2,
+      "ts_utc": "2026-10-20T15:46:01.345250+00:00",
+      "tipo": "VideoMotion",
+      "canal": "1",
+      "camara": "Camara simulada",
+      "origen": "simulador",
+      "foto_ok": true,
+      "telegram_ok": true
+    },
+    {
+      "id": 3,
+      "ts_utc": "2026-10-20T15:46:01.381933+00:00",
+      "tipo": "AlarmLocal",
+      "canal": "1",
+      "camara": "Camara simulada",
+      "origen": "simulador",
+      "foto_ok": true,
+      "telegram_ok": true
+    },
+    {
+      "id": 4,
+      "ts_utc": "2026-10-20T15:46:01.407562+00:00",
+      "tipo": "CrossLineDetection",
+      "canal": "1",
+      "camara": "Camara simulada",
+      "origen": "simulador",
+      "foto_ok": true,
+      "telegram_ok": true
+    },
+    {
+      "id": 5,
+      "ts_utc": "2026-10-20T15:46:01.451282+00:00",
+      "tipo": "CrossLineDetection",
+      "canal": "1",
+      "camara": "Camara simulada",
+      "origen": "simulador",
+      "foto_ok": true,
+      "telegram_ok": true
+    },
+    {
+      "id": 6,
+      "ts_utc": "2026-10-20T15:46:01.504046+00:00",
+      "tipo": "CrossLineDetection",
+      "canal": "1",
+      "camara": "Camara simulada",
+      "origen": "simulador",
+      "foto_ok": true,
+      "telegram_ok": true
+    },
+    {
+      "id": 7,
+      "ts_utc": "2026-10-20T15:46:01.537212+00:00",
+      "tipo": "VideoMotion",
+      "canal": "1",
+      "camara": "Camara simulada",
+      "origen": "simulador",
+      "foto_ok": true,
+      "telegram_ok": true
+    },
+    {
+      "id": 8,
+      "ts_utc": "2026-10-20T15:46:01.626160+00:00",
+      "tipo": "VideoMotion",
+      "canal": "1",
+      "camara": "Camara simulada",
+      "origen": "simulador",
+      "foto_ok": true,
+      "telegram_ok": true
+    },
+    {
+      "id": 9,
+      "ts_utc": "2026-10-20T15:46:01.751786+00:00",
+      "tipo": "FaceDetection",
+      "canal": "1",
+      "camara": "Camara simulada",
+      "origen": "simulador",
+      "foto_ok": true,
+      "telegram_ok": true
+    },
+    {
+      "id": 10,
+      "ts_utc": "2026-10-20T15:46:01.838723+00:00",
+      "tipo": "VideoMotion",
+      "canal": "1",
+      "camara": "Camara simulada",
+      "origen": "simulador",
+      "foto_ok": true,
+      "telegram_ok": true
+    },
+    {
+      "id": 11,
+      "ts_utc": "2026-10-20T15:46:01.897515+00:00",
+      "tipo": "VideoMotion",
+      "canal": "1",
+      "camara": "Camara simulada",
+      "origen": "simulador",
+      "foto_ok": true,
+      "telegram_ok": true
+    },
+    {
+      "id": 12,
+      "ts_utc": "2026-10-20T15:46:01.939729+00:00",
+      "tipo": "VideoMotion",
+      "canal": "1",
+      "camara": "Camara simulada",
+      "origen": "simulador",
+      "foto_ok": true,
+      "telegram_ok": true
+    }
+  ]
+}
